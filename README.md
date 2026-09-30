@@ -59,7 +59,7 @@ RentGuard uses a **three-tier resilience chain** so the demo never crashes, even
 - **Primary — Groq (LLaMA 3.3 70B Versatile):** chosen for near-instant inference, ideal for a live demo. Uses Groq's JSON mode for structured output.
 - **Fallback — Google Gemini (2.0 Flash):** automatically used if Groq errors or rate-limits. Uses Gemini's JSON response mime type.
 - **Fail-safe — Pre-cached response:** if *both* providers fail on the sample agreement, RentGuard serves a hand-verified, fully-grounded cached analysis so judges always see the complete flow.
-- **User model selector:** the UI lets you force **Auto (Groq → Gemini)**, **Groq only**, or **Gemini only** via a `preferred_model` field, while the backend always keeps its own fallback safety net.
+- **Configurable AI Settings modal:** a glassmorphic in-app Settings dialog (⚙️ in the header) lets you pick the **active provider** (Groq or Gemini), the **specific model** (LLaMA 3.3 70B / LLaMA 3.1 8B, or Gemini 2.0 Flash / 1.5 Flash), and toggle **Auto-fallback** on or off. These map to the API's `preferred_model` and `allow_fallback` fields, while the backend always keeps the offline cache as a final safety net.
 - **Strict JSON schema:** regardless of provider, output is coerced into one strict shape (`key_terms`, `risk_flags`, `questions_for_landlord`, `presigning_checklist`, `disclaimer`).
 
 ---
@@ -179,9 +179,21 @@ RentGuard is an **educational tool built for a hackathon**, not a legal product.
 
 ---
 
+## 🧷 Architectural Safeguards (at a glance)
+
+- **Configurable AI Settings modal** — pick provider, model, and fallback behavior at runtime; no code change needed.
+- **Non-lawyer guardrail** enforced in the system prompt, the persistent UI banner, per-clause callouts, and the printed summary.
+- **Verified exact-clause grounding** — every quote is checked server-side against the source text; unverifiable quotes are dropped before they reach the UI.
+- **Three-tier resilience** — Groq → Gemini → verified offline cache, so a live demo never crashes.
+- **Graceful degradation** on empty input, oversized paste, malformed model JSON, and an unreachable backend.
+
+---
+
 ## 👥 Participant Info
 
 <!-- Fill in your team details before submitting -->
+
+> RentGuard ships with a configurable **AI Settings modal** (runtime provider/model/fallback control) and layered **architectural safeguards** — the non-lawyer guardrail, server-verified clause grounding, and a three-tier Groq → Gemini → offline-cache resilience chain described above.
 
 - **Team Name:** _[Your team name]_
 - **Members:** _[Name 1], [Name 2], [Name 3]_

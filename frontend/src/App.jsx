@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ShieldCheck, Sparkles, Cpu, Scale } from 'lucide-react'
+import { ShieldCheck, Sparkles, Cpu, Scale, CheckCircle2 } from 'lucide-react'
 
 import Header from './components/Header'
 import DisclaimerBanner from './components/DisclaimerBanner'
@@ -10,9 +10,17 @@ import KeyTerms from './components/KeyTerms'
 import RiskRadar from './components/RiskRadar'
 import LandlordQuestions from './components/LandlordQuestions'
 import Checklist from './components/Checklist'
+import SettingsModal from './components/SettingsModal'
 import { analyzeAgreement, fetchSample } from './api'
 
 const MIN_CHARS = 60
+
+const DEFAULT_SETTINGS = {
+  provider: 'groq',
+  groqModel: 'llama-3.3-70b-versatile',
+  geminiModel: 'gemini-2.0-flash',
+  autoFallback: true,
+}
 
 // Rough count of numbered clauses in the agreement, for the summary badge.
 function countClauses(text) {
@@ -48,15 +56,43 @@ function ModelChip({ meta }) {
   )
 }
 
+function Toast({ message }) {
+  if (!message) return null
+  return (
+    <div className="no-print fixed bottom-6 left-1/2 z-50 -translate-x-1/2 animate-[fadeIn_0.2s_ease-out]">
+      <div className="flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2.5 text-sm font-medium text-white shadow-xl">
+        <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+        {message}
+      </div>
+    </div>
+  )
+}
+
 export default function App() {
   const [text, setText] = useState('')
-  const [model, setModel] = useState('auto')
+  const [settings, setSettings] = useState(DEFAULT_SETTINGS)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [sampleLoading, setSampleLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [clausesChecked, setClausesChecked] = useState(0)
   const [warning, setWarning] = useState('')
   const [error, setError] = useState('')
+  const [toast, setToast] = useState('')
+
+  const preferredModel =
+    settings.provider === 'gemini' ? settings.geminiModel : settings.groqModel
+
+  const showToast = (msg) => {
+    setToast(msg)
+    setTimeout(() => setToast(''), 2200)
+  }
+
+  const handleSaveSettings = (next) => {
+    setSettings(next)
+    setSettingsOpen(false)
+    showToast('AI settings saved')
+  }
 
   const handleLoadSample = async () => {
     setSampleLoading(true)
@@ -90,7 +126,10 @@ export default function App() {
     setError('')
     setLoading(true)
     try {
-      const data = await analyzeAgreement(trimmed, model)
+      const data = await analyzeAgreement(trimmed, {
+        preferredModel,
+        allowFallback: settings.autoFallback,
+      })
       setResult(data)
       setClausesChecked(countClauses(trimmed))
     } catch (err) {
@@ -104,11 +143,15 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/70 to-rose-50/70">
-      <Header model={model} onModelChange={setModel} />
+      <Header
+        activeProvider={settings.provider}
+        activeModelName={preferredModel}
+        onOpenSettings={() => setSettingsOpen(true)}
+      />
       <DisclaimerBanner />
 
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:py-10">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           {/* Left: input */}
           <div className="lg:col-span-4">
             <InputPanel
@@ -123,7 +166,7 @@ export default function App() {
           </div>
 
           {/* Right: results */}
-          <div className="print-full flex flex-col gap-6 lg:col-span-8">
+          <div className="print-full flex flex-col gap-8 lg:col-span-8">
             {error && (
               <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800">
                 {error}
@@ -171,6 +214,14 @@ export default function App() {
       <footer className="no-print mx-auto max-w-7xl px-4 py-6 text-center text-xs text-slate-400 sm:px-6">
         RentGuard · Built for first-time renters · Not a substitute for legal advice
       </footer>
+
+      <SettingsModal
+        open={settingsOpen}
+        settings={settings}
+        onSave={handleSaveSettings}
+        onClose={() => setSettingsOpen(false)}
+      />
+      <Toast message={toast} />
     </div>
   )
 }

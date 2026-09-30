@@ -14,7 +14,7 @@ function TermCard({ label, Icon, accent, data }) {
   const notes = data?.notes
 
   return (
-    <div className="glass-card flex flex-col rounded-xl p-4">
+    <div className="glass-card flex flex-col rounded-xl p-5">
       <div className="mb-2 flex items-center gap-2">
         <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${accent}`}>
           <Icon className="h-4 w-4" />
@@ -46,7 +46,7 @@ export default function KeyTerms({ keyTerms }) {
       <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">
         Key Terms
       </h3>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {TERM_META.map(({ key, label, Icon, accent }) => (
           <TermCard
             key={key}

@@ -25,6 +25,18 @@
   }
 }
 
+/* Toast fade-in used by the settings save feedback. */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 /* Print styles: keep only the analysis summary when exporting/printing. */
 @media print {
   .no-print {

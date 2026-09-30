@@ -31,7 +31,7 @@ function RiskCard({ flag }) {
 
   return (
     <div
-      className={`glass-card rounded-xl border-l-4 p-4 transition hover:shadow-xl hover:shadow-orange-500/10 ${style.accent}`}
+      className={`glass-card rounded-xl border-l-4 p-5 transition hover:shadow-xl hover:shadow-orange-500/10 ${style.accent}`}
     >
       <div className="mb-2 flex items-start justify-between gap-2">
         <div className="flex items-center gap-2">

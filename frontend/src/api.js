@@ -9,8 +9,8 @@ export async function fetchSample() {
   return res.json()
 }
 
-export async function analyzeAgreement(text, preferredModel) {
-  const body = { text }
+export async function analyzeAgreement(text, { preferredModel, allowFallback = true } = {}) {
+  const body = { text, allow_fallback: allowFallback }
   // 'auto' means let the backend decide (Groq -> Gemini fallback).
   if (preferredModel && preferredModel !== 'auto') {
     body.preferred_model = preferredModel

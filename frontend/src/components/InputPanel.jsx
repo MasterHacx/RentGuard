@@ -10,13 +10,13 @@ export default function InputPanel({
   warning,
 }) {
   return (
-    <section className="no-print glass-card flex flex-col rounded-2xl p-5">
+    <section className="no-print glass-card flex flex-col rounded-2xl p-6 lg:sticky lg:top-24">
       <div className="mb-3 flex items-center gap-2">
         <FileText className="h-5 w-5 text-orange-600" />
         <h2 className="text-base font-bold text-slate-900">Your Agreement</h2>
       </div>
 
-      <p className="mb-3 text-sm text-slate-500">
+      <p className="mb-4 text-sm text-slate-500">
         Paste your rental or PG agreement below, or load a sample to see how it
         works.
       </p>
@@ -26,7 +26,7 @@ export default function InputPanel({
         onChange={(e) => onTextChange(e.target.value)}
         placeholder="Paste the full text of your rental / PG agreement here..."
         spellCheck={false}
-        className="h-72 w-full resize-y rounded-xl border border-orange-100 bg-white/60 p-4 font-mono text-sm leading-relaxed text-slate-700 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-200"
+        className="h-80 w-full resize-y rounded-xl border border-orange-100 bg-white/60 p-4 font-mono text-sm leading-relaxed text-slate-700 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-200"
       />
 
       {warning && (

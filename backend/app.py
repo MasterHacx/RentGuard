@@ -52,6 +52,7 @@ def analyze():
     data = request.get_json(silent=True) or {}
     text = data.get("text", "")
     preferred_model = data.get("preferred_model")
+    allow_fallback = data.get("allow_fallback", True)
 
     if not isinstance(text, str) or not text.strip():
         return jsonify({"error": "Please provide agreement text in the 'text' field."}), 400
@@ -62,7 +63,11 @@ def analyze():
         }), 413
 
     try:
-        result = ai_service.analyze(text, preferred_model=preferred_model)
+        result = ai_service.analyze(
+            text,
+            preferred_model=preferred_model,
+            allow_fallback=bool(allow_fallback),
+        )
         return jsonify(result)
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 400

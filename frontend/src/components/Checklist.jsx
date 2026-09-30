@@ -39,7 +39,7 @@ export default function Checklist({ items }) {
         </button>
       </div>
 
-      <div className="glass-card rounded-xl p-4">
+      <div className="glass-card rounded-xl p-5">
         <div className="mb-3">
           <div className="mb-1 flex items-center justify-between text-xs font-semibold text-slate-600">
             <span>

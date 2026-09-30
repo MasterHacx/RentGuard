@@ -266,9 +266,12 @@ def call_gemini(text: str, model: str) -> dict:
 # Orchestration
 # ---------------------------------------------------------------------------
 
-def _resolve_chain(preferred_model):
+def _resolve_chain(preferred_model, allow_fallback=True):
     """Return an ordered list of (provider, model) attempts based on the
-    optional preferred_model, always defaulting to Groq -> Gemini."""
+    optional preferred_model, always defaulting to Groq -> Gemini.
+
+    When allow_fallback is False, only the primary provider is attempted
+    (the secondary LLM is skipped, though the offline cache still applies)."""
     chain = []
     pm = (preferred_model or "").strip()
 
@@ -282,10 +285,13 @@ def _resolve_chain(preferred_model):
         # Unknown/blank -> default order.
         chain.append(("groq", DEFAULT_GROQ_MODEL))
         chain.append(("gemini", DEFAULT_GEMINI_MODEL))
+
+    if not allow_fallback:
+        chain = chain[:1]
     return chain
 
 
-def analyze(text: str, preferred_model: str = None) -> dict:
+def analyze(text: str, preferred_model: str = None, allow_fallback: bool = True) -> dict:
     """Analyze agreement text. Always returns a schema-valid dict.
 
     The dict's `_meta` reports which model produced it and any errors along
@@ -296,7 +302,7 @@ def analyze(text: str, preferred_model: str = None) -> dict:
         raise ValueError("No agreement text provided.")
 
     errors = []
-    for provider, model in _resolve_chain(preferred_model):
+    for provider, model in _resolve_chain(preferred_model, allow_fallback):
         try:
             raw = call_groq(text, model) if provider == "groq" else call_gemini(text, model)
             meta = {

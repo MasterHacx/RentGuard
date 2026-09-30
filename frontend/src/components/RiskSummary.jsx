@@ -77,7 +77,7 @@ export default function RiskSummary({ flags = [], clausesChecked = 0 }) {
 
   return (
     <section
-      className={`rounded-2xl border-2 p-5 shadow-lg shadow-orange-500/5 backdrop-blur-md ${status.ring} ${status.surface}`}
+      className={`rounded-2xl border-2 p-6 shadow-lg shadow-orange-500/5 backdrop-blur-md ${status.ring} ${status.surface}`}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">

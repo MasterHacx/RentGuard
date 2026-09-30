@@ -44,11 +44,11 @@ export default function LandlordQuestions({ questions }) {
         </button>
       </div>
 
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-3">
         {questions.map((q, i) => (
           <li
             key={i}
-            className="glass-card flex items-start justify-between gap-3 rounded-xl p-3"
+            className="glass-card flex items-start justify-between gap-3 rounded-xl p-4"
           >
             <span className="flex items-start gap-2 text-sm text-slate-700">
               <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-100 text-xs font-bold text-orange-700">
