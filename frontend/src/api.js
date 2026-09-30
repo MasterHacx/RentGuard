@@ -9,12 +9,18 @@ export async function fetchSample() {
   return res.json()
 }
 
-export async function analyzeAgreement(text, { preferredModel, allowFallback = true } = {}) {
+export async function analyzeAgreement(
+  text,
+  { preferredModel, allowFallback = true, groqKey, geminiKey } = {},
+) {
   const body = { text, allow_fallback: allowFallback }
   // 'auto' means let the backend decide (Groq -> Gemini fallback).
   if (preferredModel && preferredModel !== 'auto') {
     body.preferred_model = preferredModel
   }
+  // Optional BYOK keys — only sent when the user actually entered one.
+  if (groqKey && groqKey.trim()) body.custom_groq_key = groqKey.trim()
+  if (geminiKey && geminiKey.trim()) body.custom_gemini_key = geminiKey.trim()
 
   let res
   try {

@@ -20,6 +20,21 @@ const DEFAULT_SETTINGS = {
   groqModel: 'llama-3.3-70b-versatile',
   geminiModel: 'gemini-2.0-flash',
   autoFallback: true,
+  groqKey: '',
+  geminiKey: '',
+}
+
+const SETTINGS_KEY = 'rentguard.settings'
+
+// Load persisted settings, merged over defaults so new fields stay populated.
+function loadSettings() {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY)
+    if (raw) return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) }
+  } catch {
+    /* ignore malformed/unavailable storage */
+  }
+  return DEFAULT_SETTINGS
 }
 
 // Rough count of numbered clauses in the agreement, for the summary badge.
@@ -70,7 +85,7 @@ function Toast({ message }) {
 
 export default function App() {
   const [text, setText] = useState('')
-  const [settings, setSettings] = useState(DEFAULT_SETTINGS)
+  const [settings, setSettings] = useState(loadSettings)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [sampleLoading, setSampleLoading] = useState(false)
@@ -91,6 +106,11 @@ export default function App() {
   const handleSaveSettings = (next) => {
     setSettings(next)
     setSettingsOpen(false)
+    try {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(next))
+    } catch {
+      /* storage may be unavailable (private mode); settings still apply this session */
+    }
     showToast('AI settings saved')
   }
 
@@ -129,6 +149,8 @@ export default function App() {
       const data = await analyzeAgreement(trimmed, {
         preferredModel,
         allowFallback: settings.autoFallback,
+        groqKey: settings.groqKey,
+        geminiKey: settings.geminiKey,
       })
       setResult(data)
       setClausesChecked(countClauses(trimmed))

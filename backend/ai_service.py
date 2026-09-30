@@ -30,8 +30,18 @@ DEFAULT_GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile").strip()
 DEFAULT_GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash").strip()
 
 # Models the UI selector may request, mapped to a provider.
-GROQ_MODELS = {"llama-3.3-70b-versatile", "llama-3.1-8b-instant"}
-GEMINI_MODELS = {"gemini-2.0-flash", "gemini-1.5-flash"}
+GROQ_MODELS = {
+    "llama-3.3-70b-versatile",
+    "llama-3.1-8b-instant",
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "qwen/qwen3.8-27b",
+}
+GEMINI_MODELS = {
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-1.5-pro",
+}
 
 VALID_SEVERITIES = {"High", "Medium", "Low"}
 
@@ -226,12 +236,14 @@ def normalize_response(raw: dict, source_text: str, meta: dict) -> dict:
 # Provider calls
 # ---------------------------------------------------------------------------
 
-def call_groq(text: str, model: str) -> dict:
-    if not GROQ_API_KEY:
+def call_groq(text: str, model: str, api_key: str = None) -> dict:
+    # A per-request BYOK key takes priority over the server env key.
+    key = (api_key or "").strip() or GROQ_API_KEY
+    if not key:
         raise RuntimeError("GROQ_API_KEY not configured")
     from groq import Groq
 
-    client = Groq(api_key=GROQ_API_KEY)
+    client = Groq(api_key=key)
     completion = client.chat.completions.create(
         model=model,
         messages=[
@@ -244,12 +256,14 @@ def call_groq(text: str, model: str) -> dict:
     return _extract_json(completion.choices[0].message.content)
 
 
-def call_gemini(text: str, model: str) -> dict:
-    if not GEMINI_API_KEY:
+def call_gemini(text: str, model: str, api_key: str = None) -> dict:
+    # A per-request BYOK key takes priority over the server env key.
+    key = (api_key or "").strip() or GEMINI_API_KEY
+    if not key:
         raise RuntimeError("GEMINI_API_KEY not configured")
     import google.generativeai as genai
 
-    genai.configure(api_key=GEMINI_API_KEY)
+    genai.configure(api_key=key)
     gm = genai.GenerativeModel(
         model_name=model,
         system_instruction=SYSTEM_PROMPT,
@@ -291,8 +305,17 @@ def _resolve_chain(preferred_model, allow_fallback=True):
     return chain
 
 
-def analyze(text: str, preferred_model: str = None, allow_fallback: bool = True) -> dict:
+def analyze(
+    text: str,
+    preferred_model: str = None,
+    allow_fallback: bool = True,
+    custom_groq_key: str = None,
+    custom_gemini_key: str = None,
+) -> dict:
     """Analyze agreement text. Always returns a schema-valid dict.
+
+    Optional per-request BYOK keys (custom_groq_key / custom_gemini_key) take
+    priority over the server's env keys for that request only.
 
     The dict's `_meta` reports which model produced it and any errors along
     the way (`fallback_used` is True when the cached sample response was used).
@@ -304,7 +327,10 @@ def analyze(text: str, preferred_model: str = None, allow_fallback: bool = True)
     errors = []
     for provider, model in _resolve_chain(preferred_model, allow_fallback):
         try:
-            raw = call_groq(text, model) if provider == "groq" else call_gemini(text, model)
+            if provider == "groq":
+                raw = call_groq(text, model, custom_groq_key)
+            else:
+                raw = call_gemini(text, model, custom_gemini_key)
             meta = {
                 "provider": provider,
                 "model": model,

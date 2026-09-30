@@ -53,6 +53,9 @@ def analyze():
     text = data.get("text", "")
     preferred_model = data.get("preferred_model")
     allow_fallback = data.get("allow_fallback", True)
+    # Optional BYOK keys — used for this request only, never stored or logged.
+    custom_groq_key = data.get("custom_groq_key")
+    custom_gemini_key = data.get("custom_gemini_key")
 
     if not isinstance(text, str) or not text.strip():
         return jsonify({"error": "Please provide agreement text in the 'text' field."}), 400
@@ -67,6 +70,8 @@ def analyze():
             text,
             preferred_model=preferred_model,
             allow_fallback=bool(allow_fallback),
+            custom_groq_key=custom_groq_key if isinstance(custom_groq_key, str) else None,
+            custom_gemini_key=custom_gemini_key if isinstance(custom_gemini_key, str) else None,
         )
         return jsonify(result)
     except ValueError as exc:
