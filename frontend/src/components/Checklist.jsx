@@ -1,0 +1,83 @@
+import { useEffect, useState } from 'react'
+import { ClipboardList, Printer } from 'lucide-react'
+
+export default function Checklist({ items }) {
+  const [checked, setChecked] = useState([])
+
+  // Reset checkbox state whenever a new analysis arrives.
+  useEffect(() => {
+    setChecked((items || []).map(() => false))
+  }, [items])
+
+  if (!items || items.length === 0) return null
+
+  const toggle = (i) => {
+    setChecked((prev) => {
+      const next = [...prev]
+      next[i] = !next[i]
+      return next
+    })
+  }
+
+  const doneCount = checked.filter(Boolean).length
+  const pct = items.length ? Math.round((doneCount / items.length) * 100) : 0
+
+  return (
+    <section>
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-slate-500">
+          <ClipboardList className="h-4 w-4" />
+          Pre-Signing Checklist
+        </h3>
+        <button
+          type="button"
+          onClick={() => window.print()}
+          className="no-print inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 shadow-sm transition hover:bg-slate-50"
+        >
+          <Printer className="h-3.5 w-3.5" />
+          Print / Save Summary
+        </button>
+      </div>
+
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="mb-3">
+          <div className="mb-1 flex items-center justify-between text-xs font-medium text-slate-500">
+            <span>{doneCount} of {items.length} done</span>
+            <span>{pct}%</span>
+          </div>
+          <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+            <div
+              className="h-full rounded-full bg-emerald-500 transition-all"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+        </div>
+
+        <ul className="flex flex-col gap-1">
+          {items.map((item, i) => {
+            const label = typeof item === 'string' ? item : item.item
+            return (
+              <li key={i}>
+                <label className="flex cursor-pointer items-start gap-3 rounded-lg p-2 transition hover:bg-slate-50">
+                  <input
+                    type="checkbox"
+                    checked={checked[i] || false}
+                    onChange={() => toggle(i)}
+                    className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span
+                    className={`text-sm ${
+                      checked[i] ? 'text-slate-400 line-through' : 'text-slate-700'
+                    }`}
+                  >
+                    {label}
+                  </span>
+                </label>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    </section>
+  )
+}
