@@ -22,36 +22,74 @@ First-time renters and students moving into flats or PGs frequently sign rental 
 
 ## Prerequisites & Installation
 
-### 1. Clone repository
+### Prerequisites (install once)
+- **Python 3.9+** — `python --version`
+- **Node.js 18+** and **npm** — `node --version`
+- **Git**
+- **API keys (optional):** a free **Groq** key ([console.groq.com/keys](https://console.groq.com/keys)) and/or a **Gemini** key ([aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)).
+  > 🔑 **You do NOT need keys to test the demo.** The **Load Sample PG Agreement** flow always works via a built-in verified offline cache. Keys (server `.env` **or** in-app BYOK) are only needed to analyze your *own* pasted text live.
+
+You will need **two terminals** — one for the backend, one for the frontend.
+
+---
+
+### Step 1 — Clone the repository
 ```bash
 git clone https://github.com/MasterHacx/RentGuard.git
 cd RentGuard
 ```
 
-### 2. Backend Setup (Flask)
+### Step 2 — Backend Setup (Flask) · *Terminal 1*
 ```bash
 cd backend
+
+# create + activate a virtual environment (first time only)
 python -m venv venv
-# On Windows:
+# Windows (PowerShell):
 .\venv\Scripts\activate
-# On Linux/macOS:
+# Linux / macOS:
 source venv/bin/activate
 
+# install dependencies (first time only)
 pip install -r requirements.txt
-cp .env.example .env
-# (Optional) Add your GROQ_API_KEY or GEMINI_API_KEY in .env, or use BYOK in UI
+
+# create your env file (first time only)
+copy .env.example .env      # Windows
+# cp .env.example .env       # Linux / macOS
+# (Optional) open .env and paste GROQ_API_KEY and/or GEMINI_API_KEY
+
+# run the API
 python app.py
 ```
-Backend runs on `http://localhost:5000`.
+✅ Backend now runs on **http://localhost:5000**. Verify with `http://localhost:5000/api/health`.
 
-### 3. Frontend Setup (React + Vite)
-In a new terminal:
+### Step 3 — Frontend Setup (React + Vite) · *Terminal 2*
 ```bash
 cd frontend
+
+# install dependencies (first time only)
 npm install
+
+# start the dev server
 npm run dev
 ```
-Open `http://localhost:5173` in your browser.
+✅ Open **http://localhost:5173** in your browser.
+
+### Step 4 — Run the demo (for judges, ~5 seconds)
+1. Click **Load Sample PG Agreement**.
+2. Click **Analyze Agreement**.
+3. Review the **Risk Health Bar**, **Key Terms**, **Risk Radar** (with exact clause quotes), **Landlord Questions**, and the interactive **Pre-Signing Checklist**.
+4. Click **Print / Save Summary** to export.
+
+### 🔑 Using Your Own API Key (BYOK)
+No server keys? Bring your own — nothing to configure in files:
+1. Click the **⚙️ Settings** button in the top-right header.
+2. Choose the **Provider** (Groq or Gemini) and the **Model**.
+3. Expand **Bring Your Own Key (BYOK)** and paste your Groq and/or Gemini key.
+4. Keep **Auto-fallback** ON so a failed provider automatically retries the other.
+5. Click **Save & Close**.
+
+> Your keys are used **only for your requests**, are never stored on the server or logged, and stay in your browser session. Leave them blank to use the server's `.env` keys instead.
 
 ## Participant Info
 - **Name:** Abhishek Pawar
