@@ -17,9 +17,9 @@ const PROVIDERS = {
     tagline: 'Blazing-fast inference',
     Icon: Zap,
     models: [
-      { id: 'llama-3.3-70b-versatile', name: 'LLaMA 3.3 70B', tag: 'Recommended · 280 T/s' },
+      { id: 'openai/gpt-oss-120b', name: 'GPT-OSS 120B', tag: 'Recommended · Flagship Open-Weight · 500 T/s' },
+      { id: 'llama-3.3-70b-versatile', name: 'LLaMA 3.3 70B', tag: 'Versatile · 280 T/s' },
       { id: 'llama-3.1-8b-instant', name: 'LLaMA 3.1 8B', tag: 'Ultra Fast · 560 T/s' },
-      { id: 'openai/gpt-oss-120b', name: 'GPT-OSS 120B', tag: 'Flagship Open-Weight · 500 T/s' },
       { id: 'openai/gpt-oss-20b', name: 'GPT-OSS 20B', tag: 'Blazing · 1000 T/s' },
       { id: 'qwen/qwen3.8-27b', name: 'Qwen 3.8 27B', tag: 'Balanced reasoning' },
     ],
@@ -29,9 +29,13 @@ const PROVIDERS = {
     tagline: 'Reliable multimodal model',
     Icon: Sparkles,
     models: [
-      { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash', tag: 'Default · Recommended' },
-      { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', tag: 'High Quota Free Tier' },
-      { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro', tag: 'Deep Legal Reasoning' },
+      { id: 'gemini-3.5-flash-lite', name: 'Gemini 3.5 Flash Lite', tag: 'Recommended · Highest Quota · 15 RPM · 500 RPD' },
+      { id: 'gemini-3.1-flash-lite', name: 'Gemini 3.1 Flash Lite', tag: 'Highest Quota · 15 RPM · 500 RPD' },
+      { id: 'gemini-2.5-flash-lite', name: 'Gemini 2.5 Flash Lite', tag: 'Moderate · 10 RPM · 20 RPD' },
+      { id: 'gemini-3.6-flash', name: 'Gemini 3.6 Flash', tag: 'Standard · 5 RPM · 20 RPD' },
+      { id: 'gemini-3.5-flash', name: 'Gemini 3.5 Flash', tag: 'Standard · 5 RPM · 20 RPD' },
+      { id: 'gemini-3-flash', name: 'Gemini 3 Flash', tag: 'Standard · 5 RPM · 20 RPD' },
+      { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', tag: 'Standard · 5 RPM · 20 RPD' },
     ],
   },
 }

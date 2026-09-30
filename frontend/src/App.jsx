@@ -17,8 +17,8 @@ const MIN_CHARS = 60
 
 const DEFAULT_SETTINGS = {
   provider: 'groq',
-  groqModel: 'llama-3.3-70b-versatile',
-  geminiModel: 'gemini-2.0-flash',
+  groqModel: 'openai/gpt-oss-120b',
+  geminiModel: 'gemini-3.5-flash-lite',
   autoFallback: true,
   groqKey: '',
   geminiKey: '',

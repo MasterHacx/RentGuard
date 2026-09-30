@@ -26,8 +26,8 @@ from sample_data import DISCLAIMER, FALLBACK_RESPONSE, SAMPLE_AGREEMENT
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "").strip()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 
-DEFAULT_GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile").strip()
-DEFAULT_GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash").strip()
+DEFAULT_GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b").strip()
+DEFAULT_GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite").strip()
 
 # Models the UI selector may request, mapped to a provider.
 GROQ_MODELS = {
@@ -38,6 +38,14 @@ GROQ_MODELS = {
     "qwen/qwen3.8-27b",
 }
 GEMINI_MODELS = {
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite",
+    "gemini-2.5-flash-lite",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
+    "gemini-3-flash",
+    "gemini-2.5-flash",
+    # kept for backward compatibility / env default fallback
     "gemini-2.0-flash",
     "gemini-1.5-flash",
     "gemini-1.5-pro",
