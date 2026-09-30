@@ -48,10 +48,10 @@ export default function LandlordQuestions({ questions }) {
         {questions.map((q, i) => (
           <li
             key={i}
-            className="flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-sm"
+            className="glass-card flex items-start justify-between gap-3 rounded-xl p-3"
           >
             <span className="flex items-start gap-2 text-sm text-slate-700">
-              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-bold text-indigo-700">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-100 text-xs font-bold text-orange-700">
                 {i + 1}
               </span>
               {q}

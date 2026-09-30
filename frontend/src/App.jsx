@@ -23,8 +23,8 @@ function countClauses(text) {
 
 function EmptyState() {
   return (
-    <div className="flex h-full min-h-[24rem] flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white/60 p-8 text-center">
-      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-600">
+    <div className="flex h-full min-h-[24rem] flex-col items-center justify-center rounded-2xl border border-dashed border-orange-200 bg-white/50 p-8 text-center backdrop-blur-sm">
+      <div className="sunset-gradient mb-4 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-md shadow-orange-500/30">
         <ShieldCheck className="h-7 w-7" />
       </div>
       <h3 className="text-lg font-bold text-slate-900">Your analysis will appear here</h3>
@@ -103,25 +103,27 @@ export default function App() {
   const hasResult = result && result.key_terms
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/70 to-rose-50/70">
       <Header model={model} onModelChange={setModel} />
       <DisclaimerBanner />
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Left: input */}
-          <InputPanel
-            text={text}
-            onTextChange={setText}
-            onLoadSample={handleLoadSample}
-            onAnalyze={handleAnalyze}
-            loading={loading}
-            sampleLoading={sampleLoading}
-            warning={warning}
-          />
+          <div className="lg:col-span-4">
+            <InputPanel
+              text={text}
+              onTextChange={setText}
+              onLoadSample={handleLoadSample}
+              onAnalyze={handleAnalyze}
+              loading={loading}
+              sampleLoading={sampleLoading}
+              warning={warning}
+            />
+          </div>
 
           {/* Right: results */}
-          <div className="print-full flex flex-col gap-6">
+          <div className="print-full flex flex-col gap-6 lg:col-span-8">
             {error && (
               <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800">
                 {error}
@@ -134,7 +136,7 @@ export default function App() {
               <>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h2 className="flex items-center gap-2 text-lg font-bold text-slate-900">
-                    <Sparkles className="h-5 w-5 text-indigo-600" />
+                    <Sparkles className="h-5 w-5 text-orange-500" />
                     Agreement Analysis
                   </h2>
                   <ModelChip meta={result._meta} />
@@ -153,7 +155,7 @@ export default function App() {
                 <Checklist items={result.presigning_checklist} />
 
                 {/* Non-lawyer disclaimer repeated in the results / printout */}
-                <div className="flex items-start gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+                <div className="glass-card flex items-start gap-2 rounded-xl px-4 py-3">
                   <Scale className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
                   <p className="text-xs text-slate-500">
                     {result.disclaimer ||

@@ -14,7 +14,7 @@ function TermCard({ label, Icon, accent, data }) {
   const notes = data?.notes
 
   return (
-    <div className="flex flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="glass-card flex flex-col rounded-xl p-4">
       <div className="mb-2 flex items-center gap-2">
         <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${accent}`}>
           <Icon className="h-4 w-4" />

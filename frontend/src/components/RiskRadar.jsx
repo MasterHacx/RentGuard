@@ -31,7 +31,7 @@ function RiskCard({ flag }) {
 
   return (
     <div
-      className={`rounded-xl border border-l-4 border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md ${style.accent}`}
+      className={`glass-card rounded-xl border-l-4 p-4 transition hover:shadow-xl hover:shadow-orange-500/10 ${style.accent}`}
     >
       <div className="mb-2 flex items-start justify-between gap-2">
         <div className="flex items-center gap-2">
@@ -89,7 +89,7 @@ export default function RiskRadar({ flags }) {
       </h3>
 
       {!flags || flags.length === 0 ? (
-        <div className="rounded-xl border border-slate-200 bg-white p-5 text-center text-sm text-slate-500">
+        <div className="glass-card rounded-xl p-5 text-center text-sm text-slate-500">
           No risky clauses were flagged. That doesn't guarantee the agreement is
           safe — read it carefully and ask a lawyer if unsure.
         </div>

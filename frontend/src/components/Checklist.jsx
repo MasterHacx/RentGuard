@@ -39,7 +39,7 @@ export default function Checklist({ items }) {
         </button>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="glass-card rounded-xl p-4">
         <div className="mb-3">
           <div className="mb-1 flex items-center justify-between text-xs font-semibold text-slate-600">
             <span>
@@ -70,7 +70,7 @@ export default function Checklist({ items }) {
                     type="checkbox"
                     checked={checked[i] || false}
                     onChange={() => toggle(i)}
-                    className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                    className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-slate-300 text-orange-600 focus:ring-orange-500"
                   />
                   <span
                     className={`text-sm ${

@@ -10,9 +10,9 @@ export default function InputPanel({
   warning,
 }) {
   return (
-    <section className="no-print flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <section className="no-print glass-card flex flex-col rounded-2xl p-5">
       <div className="mb-3 flex items-center gap-2">
-        <FileText className="h-5 w-5 text-indigo-600" />
+        <FileText className="h-5 w-5 text-orange-600" />
         <h2 className="text-base font-bold text-slate-900">Your Agreement</h2>
       </div>
 
@@ -26,7 +26,7 @@ export default function InputPanel({
         onChange={(e) => onTextChange(e.target.value)}
         placeholder="Paste the full text of your rental / PG agreement here..."
         spellCheck={false}
-        className="h-72 w-full resize-y rounded-xl border border-slate-300 bg-slate-50 p-4 font-mono text-sm leading-relaxed text-slate-700 outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200"
+        className="h-72 w-full resize-y rounded-xl border border-orange-100 bg-white/60 p-4 font-mono text-sm leading-relaxed text-slate-700 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-200"
       />
 
       {warning && (
@@ -41,7 +41,7 @@ export default function InputPanel({
           type="button"
           onClick={onLoadSample}
           disabled={loading || sampleLoading}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-orange-200 bg-white/70 px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-orange-50 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {sampleLoading ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -55,7 +55,7 @@ export default function InputPanel({
           type="button"
           onClick={onAnalyze}
           disabled={loading}
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+          className="sunset-gradient inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-orange-500/30 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {loading ? (
             <>

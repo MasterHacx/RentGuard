@@ -8,14 +8,14 @@ const MODEL_OPTIONS = [
 
 export default function Header({ model, onModelChange }) {
   return (
-    <header className="border-b border-slate-200 bg-white">
+    <header className="sticky top-0 z-20 border-b border-orange-100/60 bg-white/70 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-sm">
+          <div className="sunset-gradient flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-md shadow-orange-500/30">
             <ShieldCheck className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-xl font-extrabold tracking-tight text-slate-900">
+            <h1 className="sunset-text text-xl font-extrabold tracking-tight">
               RentGuard
             </h1>
             <p className="text-xs text-slate-500">
@@ -36,7 +36,7 @@ export default function Header({ model, onModelChange }) {
             id="model-select"
             value={model}
             onChange={(e) => onModelChange(e.target.value)}
-            className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+            className="rounded-lg border border-orange-200 bg-white/80 px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm outline-none backdrop-blur-sm focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
           >
             {MODEL_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
