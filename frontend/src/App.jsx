@@ -5,6 +5,7 @@ import Header from './components/Header'
 import DisclaimerBanner from './components/DisclaimerBanner'
 import FallbackBanner from './components/FallbackBanner'
 import InputPanel from './components/InputPanel'
+import RiskSummary from './components/RiskSummary'
 import KeyTerms from './components/KeyTerms'
 import RiskRadar from './components/RiskRadar'
 import LandlordQuestions from './components/LandlordQuestions'
@@ -12,6 +13,13 @@ import Checklist from './components/Checklist'
 import { analyzeAgreement, fetchSample } from './api'
 
 const MIN_CHARS = 60
+
+// Rough count of numbered clauses in the agreement, for the summary badge.
+function countClauses(text) {
+  if (!text) return 0
+  const matches = text.match(/(?:^|\n)\s*\d{1,2}\s*[.)]/g)
+  return matches ? matches.length : 0
+}
 
 function EmptyState() {
   return (
@@ -46,6 +54,7 @@ export default function App() {
   const [loading, setLoading] = useState(false)
   const [sampleLoading, setSampleLoading] = useState(false)
   const [result, setResult] = useState(null)
+  const [clausesChecked, setClausesChecked] = useState(0)
   const [warning, setWarning] = useState('')
   const [error, setError] = useState('')
 
@@ -83,6 +92,7 @@ export default function App() {
     try {
       const data = await analyzeAgreement(trimmed, model)
       setResult(data)
+      setClausesChecked(countClauses(trimmed))
     } catch (err) {
       setError(err.message)
     } finally {
@@ -131,6 +141,11 @@ export default function App() {
                 </div>
 
                 <FallbackBanner meta={result._meta} />
+
+                <RiskSummary
+                  flags={result.risk_flags}
+                  clausesChecked={clausesChecked}
+                />
 
                 <KeyTerms keyTerms={result.key_terms} />
                 <RiskRadar flags={result.risk_flags} />

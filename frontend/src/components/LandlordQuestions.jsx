@@ -56,18 +56,30 @@ export default function LandlordQuestions({ questions }) {
               </span>
               {q}
             </span>
-            <button
-              type="button"
-              onClick={() => copy(q, i)}
-              title="Copy question"
-              className="no-print inline-flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
-            >
-              {copiedIndex === i ? (
-                <Check className="h-4 w-4 text-emerald-600" />
-              ) : (
-                <Copy className="h-4 w-4" />
+            <div className="no-print relative shrink-0">
+              {copiedIndex === i && (
+                <span className="absolute -top-8 right-0 z-10 whitespace-nowrap rounded-md bg-slate-900 px-2 py-1 text-xs font-medium text-white shadow-lg">
+                  Copied to clipboard!
+                  <span className="absolute -bottom-1 right-3 h-2 w-2 rotate-45 bg-slate-900" />
+                </span>
               )}
-            </button>
+              <button
+                type="button"
+                onClick={() => copy(q, i)}
+                title="Copy question"
+                className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold transition ${
+                  copiedIndex === i
+                    ? 'text-emerald-600'
+                    : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
+                }`}
+              >
+                {copiedIndex === i ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </button>
+            </div>
           </li>
         ))}
       </ul>

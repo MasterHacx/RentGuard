@@ -41,13 +41,20 @@ export default function Checklist({ items }) {
 
       <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <div className="mb-3">
-          <div className="mb-1 flex items-center justify-between text-xs font-medium text-slate-500">
-            <span>{doneCount} of {items.length} done</span>
-            <span>{pct}%</span>
+          <div className="mb-1 flex items-center justify-between text-xs font-semibold text-slate-600">
+            <span>
+              {doneCount} of {items.length} tasks completed{' '}
+              <span className="text-slate-400">({pct}%)</span>
+            </span>
+            {pct === 100 && (
+              <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-emerald-700">
+                All done 🎉
+              </span>
+            )}
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
             <div
-              className="h-full rounded-full bg-emerald-500 transition-all"
+              className="h-full rounded-full bg-emerald-500 transition-all duration-300"
               style={{ width: `${pct}%` }}
             />
           </div>
